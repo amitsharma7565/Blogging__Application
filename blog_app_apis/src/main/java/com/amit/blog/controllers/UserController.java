@@ -29,9 +29,8 @@ import com.amit.blog.services.UserService;
 public class UserController {
 	@Autowired
 private UserService userService;
-	
 	@PostMapping("/createUser")
-	public ResponseEntity<UserDto> createUser(@Valid  @RequestBody UserDto userDto ){
+	public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto ){
 		UserDto createUserDto= this.userService.createUser(userDto);
 		return  new ResponseEntity<>(createUserDto, HttpStatus.CREATED)  ;
 	}

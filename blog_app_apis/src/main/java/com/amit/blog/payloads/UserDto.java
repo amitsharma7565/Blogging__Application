@@ -1,17 +1,22 @@
 package com.amit.blog.payloads;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class UserDto {
 	private Integer id;
-	@NotNull
+	@NotEmpty
+	@Size(min=4, message="username should be min of 4 char")
 	private String name;
-	@Email
+	@Email(message="Email address not valid")
 	private String email;
-	@NotNull
+	@NotEmpty
+	
 	private String password;
-	@NotNull
+	@NotEmpty
+	@Size(min=3,max=10, message="password must be min of 3 chars and max of 10 chars")
 	private String about;
 	public Integer getId() {
 		return id;
