@@ -1,8 +1,11 @@
 package com.amit.blog.payloads;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.amit.blog.entites.Category;
+import com.amit.blog.entites.Comment;
 import com.amit.blog.entites.User;
 
 public class PostDto {
@@ -12,6 +15,15 @@ public class PostDto {
 	private Date addedDate;
 	private CategoryDto category;
 	private UserDto user;
+	private Set<CommentDto> comments= new HashSet<>();
+	
+	
+	public Set<CommentDto> getComments() {
+		return comments;
+	}
+	public void setComments(Set<CommentDto> comments) {
+		this.comments = comments;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -48,7 +60,10 @@ public class PostDto {
 	public void setUser(UserDto user) {
 		this.user = user;
 	}
-	public PostDto(String title, String content, String imageName, Date addedDate, CategoryDto category, UserDto user) {
+
+	
+	public PostDto(String title, String content, String imageName, Date addedDate, CategoryDto category, UserDto user,
+			Set<CommentDto> comments) {
 		super();
 		this.title = title;
 		this.content = content;
@@ -56,6 +71,7 @@ public class PostDto {
 		this.addedDate = addedDate;
 		this.category = category;
 		this.user = user;
+		this.comments = comments;
 	}
 	public PostDto() {
 		super();
