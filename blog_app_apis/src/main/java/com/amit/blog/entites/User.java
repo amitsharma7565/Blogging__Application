@@ -2,16 +2,19 @@ package com.amit.blog.entites;
 
 
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
+
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-
+import javax.persistence.JoinColumn;
 @Entity
 public class User {
 	@Id
@@ -24,6 +27,18 @@ private String about;
 
 @OneToMany(mappedBy="user", cascade=CascadeType.ALL)
 private List<Post> posts = new ArrayList<>();
+
+@ManyToMany
+@JoinTable(
+    name = "user_role",
+    joinColumns = { @JoinColumn(name = "user", referencedColumnName = "id") },
+    inverseJoinColumns = { @JoinColumn(name = "role", referencedColumnName = "id") }
+)
+private Set<Role> roles = new HashSet<>();
+
+
+
+
 
 public Integer getId() {
 	return id;
