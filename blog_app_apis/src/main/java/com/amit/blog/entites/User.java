@@ -4,19 +4,25 @@ package com.amit.blog.entites;
 
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import javax.persistence.JoinColumn;
+import jakarta.persistence.JoinColumn;
 @Entity
-public class User {
+public class User implements UserDetails{
+	// this userDetails has so many user detials method like role, password etc  
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 private Integer id;
@@ -28,17 +34,23 @@ private String about;
 @OneToMany(mappedBy="user", cascade=CascadeType.ALL)
 private List<Post> posts = new ArrayList<>();
 
-@ManyToMany
-@JoinTable(
-    name = "user_role",
+@ManyToMany(cascade= CascadeType.ALL, fetch=FetchType.LAZY)
+@JoinTable( name = "user_role",
     joinColumns = { @JoinColumn(name = "user", referencedColumnName = "id") },
-    inverseJoinColumns = { @JoinColumn(name = "role", referencedColumnName = "id") }
-)
+    inverseJoinColumns = { @JoinColumn(name = "role", referencedColumnName = "id") })
 private Set<Role> roles = new HashSet<>();
 
 
 
 
+
+public Set<Role> getRoles() {
+	return roles;
+}
+
+public void setRoles(Set<Role> roles) {
+	this.roles = roles;
+}
 
 public Integer getId() {
 	return id;
@@ -88,7 +100,9 @@ public void setPosts(List<Post> posts) {
 	this.posts = posts;
 }
 
-public User(Integer id, String name, String email, String password, String about, List<Post> posts) {
+
+
+public User(Integer id, String name, String email, String password, String about, List<Post> posts, Set<Role> roles) {
 	super();
 	this.id = id;
 	this.name = name;
@@ -96,11 +110,48 @@ public User(Integer id, String name, String email, String password, String about
 	this.password = password;
 	this.about = about;
 	this.posts = posts;
+	this.roles = roles;
 }
 
 public User() {
 	super();
 	// TODO Auto-generated constructor stub
+}
+
+@Override
+public Collection<? extends GrantedAuthority> getAuthorities() {
+	List<SimpleGrantedAuthority> authorites= this.roles.stream().map((role)->new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+	return authorites;
+}
+
+@Override
+public String getUsername() {
+	// TODO Auto-generated method stub
+	return this.email;
+}
+
+@Override
+public boolean isAccountNonExpired() {
+	// TODO Auto-generated method stub
+	return true;
+}
+
+@Override
+public boolean isAccountNonLocked() {
+	// TODO Auto-generated method stub
+	return true;
+}
+
+@Override
+public boolean isCredentialsNonExpired() {
+	// TODO Auto-generated method stub
+	return true;
+}
+
+@Override
+public boolean isEnabled() {
+	// TODO Auto-generated method stub
+	return true;
 }
 
 }
