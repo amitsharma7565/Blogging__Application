@@ -33,4 +33,13 @@ public ResponseEntity<ApiResponse> resousrceNotFounDExceptionHandle(ResourceNotF
 		return new ResponseEntity <Map<String,String>>(resq,HttpStatus.BAD_REQUEST);
 	}
 	
+	
+	
+	@ExceptionHandler(ApiException.class)
+public ResponseEntity<ApiResponse> handleApiException(ApiException ex){
+	String messsage=ex.getMessage();
+	ApiResponse api= new ApiResponse(messsage,true);
+	return new ResponseEntity<ApiResponse>(api,HttpStatus.BAD_REQUEST);
+}
+	
 }

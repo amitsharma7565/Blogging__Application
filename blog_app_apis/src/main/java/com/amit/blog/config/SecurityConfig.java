@@ -22,6 +22,7 @@ import com.amit.blog.security.JwtAuthenticationEntryPoint;
 import com.amit.blog.security.JwtAuthenticationFilter;
 
 
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled=true)

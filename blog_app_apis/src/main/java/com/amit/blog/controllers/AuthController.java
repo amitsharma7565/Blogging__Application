@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.amit.blog.exceptions.ApiException;
 import com.amit.blog.payloads.JwtAuthRequest;
 import com.amit.blog.payloads.JwtAuthResponse;
 import com.amit.blog.security.JwtTokenHelper;
@@ -52,7 +53,7 @@ public class AuthController {
 		}
 		catch(Exception e) {
 			System.out.println("invalid details");
-			throw new Exception("invalid Details try again with correct username or password");
+			throw new ApiException("invalid Details try again with correct username or password");
 		}
 				
 		
