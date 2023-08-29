@@ -16,23 +16,23 @@ import org.springframework.web.bind.annotation.RestController;
 import com.amit.blog.exceptions.ApiException;
 import com.amit.blog.payloads.JwtAuthRequest;
 import com.amit.blog.payloads.JwtAuthResponse;
+import com.amit.blog.payloads.UserDto;
 import com.amit.blog.security.JwtTokenHelper;
+import com.amit.blog.services.UserService;
 
 import jakarta.security.auth.message.callback.PrivateKeyCallback.Request;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
-
 	@Autowired
 	private JwtTokenHelper jwtTokenHelper;
-	
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	
+	@Autowired
+	private UserService userService;
 	@PostMapping("/login")
 	public ResponseEntity<JwtAuthResponse> createToken(
 			@RequestBody JwtAuthRequest request
@@ -55,11 +55,18 @@ public class AuthController {
 			System.out.println("invalid details");
 			throw new ApiException("invalid Details try again with correct username or password");
 		}
-				
 		
 		
 		
 		
 	}
 	
+	
+	// register new user api
+	@PostMapping("/register")
+	public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto){
+		UserDto registerNewUser = this.userService.registerNewUser(userDto);
+		return new ResponseEntity<UserDto>(registerNewUser,HttpStatus.CREATED);
+		
+	}
 }

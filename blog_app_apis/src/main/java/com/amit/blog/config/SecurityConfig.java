@@ -42,7 +42,8 @@ public class SecurityConfig {
       .disable()
       .authorizeHttpRequests()
 //      login api public if i want to public any other then pass here and then that url is public 
-      .requestMatchers("/api/v1/auth/login").permitAll()
+      // and here this two ** means it allow that 2 methos that is present in AuthController
+      .requestMatchers("/api/v1/auth/**").permitAll()
       // this 46 line is for all person access the get method without login access 
       .requestMatchers(HttpMethod.GET).permitAll()
       .anyRequest()

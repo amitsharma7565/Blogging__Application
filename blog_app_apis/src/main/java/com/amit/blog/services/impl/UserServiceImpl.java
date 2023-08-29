@@ -1,15 +1,20 @@
 package com.amit.blog.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.amit.blog.config.AppConstants;
+import com.amit.blog.entites.Role;
 import com.amit.blog.entites.User;
 import com.amit.blog.exceptions.ResourceNotFoundException;
 import com.amit.blog.payloads.UserDto;
+import com.amit.blog.repositories.RoleRepo;
 import com.amit.blog.repositories.UserRepo;
 import com.amit.blog.services.UserService;
 @Service
@@ -18,6 +23,11 @@ public class UserServiceImpl implements UserService{
 	private UserRepo userRepo;
 @Autowired
 private ModelMapper modelMapper;
+@Autowired
+private PasswordEncoder passwordEncoder;
+@Autowired
+private RoleRepo roleRepo;
+
 	@Override
 	public UserDto createUser(UserDto userDto) {
 		User user=this.dtoToUser(userDto);
@@ -79,6 +89,18 @@ List<UserDto> usersDto= users.stream().map(user->this.userToDto(user)).collect(C
 //		userDto.setPassword(user.getPassword());
 		return userDto;
 		
+	}
+
+	@Override
+	public UserDto registerNewUser(UserDto userDto) {
+		User user= this.modelMapper.map(userDto, User.class);
+		//encode the password
+		user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+		// set the roles normally i set the role for new user only normal user
+		 Role role = this.roleRepo.findById(AppConstants.NORMAL_USER).get();
+		 user.getRoles().add(role);
+		 User newUser= this.userRepo.save(user);
+		return this.modelMapper.map(newUser, UserDto.class);
 	}
 
 }
