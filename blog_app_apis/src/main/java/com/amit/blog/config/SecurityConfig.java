@@ -23,15 +23,22 @@ import com.amit.blog.security.CustomUserDetailService;
 import com.amit.blog.security.JwtAuthenticationEntryPoint;
 import com.amit.blog.security.JwtAuthenticationFilter;
 
+
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 @EnableWebMvc 
-public class SecurityConfig  {
-	//extends WebSecurityConfiguration
+public class SecurityConfig {
+	
 	//define array and in this array store all url that i want to do public
 	public static final String[] PUBLIC_URLS= {
 			"/api/v1/auth/**",
+			"/v3/api-docs",
+			"v2/api-docs",
+			"swagger-resources/**",
+			"/swagger-ui/**",
+			"/webjars/**"
 	};
 	
 	@Autowired
@@ -66,8 +73,14 @@ public class SecurityConfig  {
       
        return http.build();
     }
+    
+  
     protected void config(AuthenticationManagerBuilder auth) throws Exception{
     	auth.userDetailsService(this.customUserDetailService).passwordEncoder(passwordEncoder()); 
+    }
+    
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(this.customUserDetailService).passwordEncoder(passwordEncoder());
     }
 // to BCrypt the Password store the password in database in the form of BCrypt
     
