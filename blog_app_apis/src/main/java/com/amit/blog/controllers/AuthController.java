@@ -54,14 +54,8 @@ public class AuthController {
 		catch(Exception e) {
 			System.out.println("invalid details");
 			throw new ApiException("invalid Details try again with correct username or password");
-		}
-		
-		
-		
-		
+		}	
 	}
-	
-	
 	// register new user api
 	@PostMapping("/register")
 	public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto){

@@ -32,14 +32,22 @@ import com.amit.blog.security.JwtAuthenticationFilter;
 public class SecurityConfig {
 	
 	//define array and in this array store all url that i want to do public
-	public static final String[] PUBLIC_URLS= {
-			"/api/v1/auth/**",
-			"/v3/api-docs",
-			"v2/api-docs",
-			"swagger-resources/**",
-			"/swagger-ui/**",
-			"/webjars/**"
-	};
+//	public static final String[] PUBLIC_URLS= {
+//			"/api/v1/auth/**",
+//			"/v3/api-docs",
+//			"v2/api-docs",
+//			"swagger-resources/**",
+//			"/swagger-ui/**",
+//			"/webjars/**"
+//	};
+	public static final String[] PUBLIC_URLS = {
+		    "/api/v1/auth/**",
+		    "/v3/api-docs/**",
+		    "/swagger-ui/**",
+		    "/swagger-resources/**",
+		    "/webjars/**"
+		};
+
 	
 	@Autowired
 	private CustomUserDetailService customUserDetailService;
@@ -48,7 +56,8 @@ public class SecurityConfig {
 	@Autowired
 	private JwtAuthenticationFilter jwtAuthenticationFilter; 
 	
-    @Bean
+	
+	@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
       http
       .csrf()
@@ -59,21 +68,20 @@ public class SecurityConfig {
       .requestMatchers(PUBLIC_URLS).permitAll()
       // this 46 line is for all person access the get method without login access 
       .requestMatchers(HttpMethod.GET).permitAll()
-      .anyRequest()
-      .authenticated()
+      .anyRequest().authenticated()
       .and()
       .exceptionHandling()
       .authenticationEntryPoint(this.jwtAuthenticationEntryPoint)
       .and()
       .sessionManagement()
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-      
-      
       http.addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-      
        return http.build();
     }
     
+	
+	
+	
   
     protected void config(AuthenticationManagerBuilder auth) throws Exception{
     	auth.userDetailsService(this.customUserDetailService).passwordEncoder(passwordEncoder()); 
