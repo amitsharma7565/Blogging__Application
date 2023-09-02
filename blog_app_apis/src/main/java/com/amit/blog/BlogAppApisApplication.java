@@ -11,10 +11,14 @@ import com.amit.blog.config.AppConstants;
 import com.amit.blog.entites.Role;
 import com.amit.blog.repositories.RoleRepo;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 @SpringBootApplication
+@EnableSwagger2
+
 public class BlogAppApisApplication implements CommandLineRunner{
 
 	@Autowired
