@@ -15,7 +15,6 @@ com\amit\blog\exceptions\GlobalExceptionHandler.class
 com\amit\blog\services\FileService.class
 com\amit\blog\BlogAppApisApplication.class
 com\amit\blog\security\JwtAuthenticationFilter.class
-com\amit\blog\config\SwaggerConfig.class
 com\amit\blog\entites\Post.class
 com\amit\blog\services\impl\UserServiceImpl.class
 com\amit\blog\payloads\RoleDto.class
